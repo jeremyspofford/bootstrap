@@ -107,7 +107,6 @@ stow_it() {
     if [[ ! " ${ignore_stow_modules[@]} " =~ " ${dir} " ]]; then
       log "Stowing $dir"
       stow --target=$HOME --restow "$dir"
-    #   stow --no-folding --ignore='.DS_Store' --target=$HOME --restow "$dir" 2>/dev/null
     fi
   done
   log "Dotfiles sync complete"
@@ -164,6 +163,16 @@ finalize() {
     log "Installing Oh My Zsh..."
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
   fi
+
+  # Prompt user about backup folder
+  if [[ -d "$HOME/backup_"* ]]; then
+    log "Backup folder found. Would you like to remove it? [y/N]"
+    read -r remove_backup
+    if [[ "$remove_backup" =~ ^[Yy]$ ]]; then
+      rm -rf "$HOME/backup_"*
+      log "Backup folder removed"
+    fi
+  fi
 }
 
 # ============================================================================ #
@@ -184,9 +193,9 @@ main() {
   fi
 
   # Parse command line options
-  backup=false
+  backup=true
   OPTIONS=n
-  LONGOPTIONS=backup
+  LONGOPTIONS=no-backup
   
   PARSED=$(getopt --options=$OPTIONS --longoptions=$LONGOPTIONS --name "$0" -- "$@")
   if [[ $? -ne 0 ]]; then
@@ -196,8 +205,8 @@ main() {
 
   while true; do
     case "$1" in
-      -b | --backup)
-        backup=true
+      -n | --no-backup)
+        backup=false
         shift
         ;;
       --)
