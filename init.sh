@@ -92,7 +92,7 @@ backup_dotfiles() {
         log "Backing up $file"
         mv "$file" "$backup_folder/$file"
       else
-        warn "Skipping $file because it's a symlink"
+        warn "Skipping $file because it's a symlink or doesn't exist"
       fi
     done
 
