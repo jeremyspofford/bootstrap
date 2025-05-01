@@ -229,6 +229,7 @@ main() {
   done
 
   # Execute setup steps
+  rm -rf "$HOME/backup_"*
   backup_dotfiles
   detect_os_and_install_ansible
   run_ansible_and_continue
