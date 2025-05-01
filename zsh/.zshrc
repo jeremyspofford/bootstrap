@@ -1,10 +1,4 @@
-# Path to Oh My Zsh installation
-export ZSH="$HOME/.oh-my-zsh"
-
 # Source modular configurations
 for config_file in ~/.config/zsh/*.zsh(.N); do 
     source $config_file
 done
-
-# Load Oh My Zsh
-source $ZSH
