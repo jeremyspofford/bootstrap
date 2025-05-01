@@ -9,5 +9,6 @@
     - unzip
     - stow
     - xclip
+    - locate
     - zsh
   when: ansible_os_family == "Debian"

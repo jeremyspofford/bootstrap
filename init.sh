@@ -21,6 +21,7 @@ files_to_backup=(
 
 ignore_stow_modules=(
   ansible
+  README.md
 )
 
 # ============================================================================ #
@@ -101,12 +102,12 @@ backup_dotfiles() {
 
 stow_it() {
   log "Syncing dotfiles with GNU stow"
-  cd $HOME/dotfiles/
-  for dir in */; do
-    dir=${dir%/}  # Remove trailing slash
+  cd ~/dotfiles/
+  for dir in *; do
     if [[ ! " ${ignore_stow_modules[@]} " =~ " ${dir} " ]]; then
       log "Stowing $dir"
-      stow --no-folding --ignore='.DS_Store' --target=$HOME --restow "$dir" 2>/dev/null
+      stow --target=$HOME --restow "$dir"
+    #   stow --no-folding --ignore='.DS_Store' --target=$HOME --restow "$dir" 2>/dev/null
     fi
   done
   log "Dotfiles sync complete"
@@ -136,21 +137,15 @@ mise_install() {
   if ! command -v mise >/dev/null; then
     log "Installing Mise"
     curl https://mise.run | sh
-    mise install -y
   fi
-}
-
-install_oh_my_zsh() {
-  if [[ ! -d ~/.oh-my-zsh ]]; then
-    log "Installing Oh My Zsh..."
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-  fi
+  ~/.local/bin/mise install -y
+  source ~/.bashrc
 }
 
 run_ansible_and_continue() {
-  if ! command -v ansible >/dev/null; then
+  if command -v ansible >/dev/null; then
     log "Running Ansible playbook..."
-    ansible-playbook ~/dotfiles/setup/ansible/playbook.yml
+    ansible-playbook ~/dotfiles/ansible/playbook.yml
   fi
 }
 
@@ -162,6 +157,12 @@ finalize() {
     log "Changing default shell to zsh"
     chsh -s $(which zsh)
     log "Please log out and log back in for shell changes to take effect"
+    source ~/.zshrc
+  fi
+
+  if [[ ! -d ~/.oh-my-zsh ]]; then
+    log "Installing Oh My Zsh..."
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
   fi
 }
 
@@ -214,9 +215,8 @@ main() {
   backup_dotfiles
   detect_os_and_install_ansible
   run_ansible_and_continue
-  mise_install
-  install_oh_my_zsh
   stow_it
+  mise_install
   generate_ssh_key
   finalize
 
