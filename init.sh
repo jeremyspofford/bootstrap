@@ -30,6 +30,7 @@ ignore_stow_modules=(
 
 log() { echo -e "\033[1;34m[INFO]\033[0m $1"; }
 warn() { echo -e "\033[1;33m[WARN]\033[0m $1"; }
+error() { echo -e "\033[1;31m[ERROR]\033[0m $1"; }
 
 # ============================================================================ #
 # Package Management Functions
@@ -37,7 +38,7 @@ warn() { echo -e "\033[1;33m[WARN]\033[0m $1"; }
 
 install_ansible_macos() {
   if ! command -v brew >/dev/null; then
-    echo "❌ Homebrew not found. Please install it from https://brew.sh"
+    error "❌ Homebrew not found. Please install it from https://brew.sh"
     exit 1
   fi
 
@@ -68,7 +69,7 @@ detect_os_and_install_ansible() {
       install_ansible_ubuntu
       ;;
     *)
-      echo "Unsupported OS: $(uname -s)"
+      error "Unsupported OS: $(uname -s)"
       exit 1
       ;;
   esac
@@ -106,7 +107,7 @@ stow_it() {
   for dir in *; do
     if [[ ! " ${ignore_stow_modules[@]} " =~ " ${dir} " ]]; then
       log "Stowing $dir"
-      stow --target=$HOME --restow "$dir"
+      stow --target=$HOME --restow "$dir" 2>/dev/null
     fi
   done
   log "Dotfiles sync complete"
@@ -115,7 +116,7 @@ stow_it() {
 generate_ssh_key() {
   if [[ ! -f ~/.ssh/personal_id_ed25519 ]]; then
     mkdir -p ~/.ssh
-    echo -n "GitHub email: "
+     -n "GitHub email: "
     read email
     ssh-keygen -t ed25519 -C $email -f ~/.ssh/personal_id_ed25519 -N ""
     cat ~/.ssh/personal_id_ed25519.pub | xclip -selection clipboard
@@ -187,7 +188,7 @@ main() {
     elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
       sudo apt install util-linux
     else
-      echo "Unsupported OS: $OSTYPE" >&2
+      error "Unsupported OS: $OSTYPE" >&2
       exit 1
     fi
   fi
@@ -214,7 +215,7 @@ main() {
         break
         ;;
       *)
-        echo "Invalid option: $1" >&2
+        error "Invalid option: $1" >&2
         exit 1
         ;;
     esac
