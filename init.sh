@@ -22,6 +22,7 @@ files_to_backup=(
 ignore_stow_modules=(
   ansible
   README.md
+  init.sh
 )
 
 # ============================================================================ #
