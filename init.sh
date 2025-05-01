@@ -158,6 +158,7 @@ finalize() {
   if [[ "$SHELL" != "/usr/bin/zsh" ]]; then
     log "Changing default shell to zsh"
     chsh -s $(which zsh)
+    zsh
     log "Please log out and log back in for shell changes to take effect"
     source ~/.zshrc
   fi
@@ -166,6 +167,10 @@ finalize() {
     log "Installing Oh My Zsh..."
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
   fi
+
+  #Backing dotfiles again because oh-my-zsh overrides the .zshrc file, and stow doesn't like that ( # TOD0: move to yadm or chezmoi?)
+  backup_dotfiles
+  stow --dir=$HOME/dotfiles --target=$HOME --restow zsh
 
   # Prompt user about backup folder
   if [[ -d "$HOME/backup_"* ]]; then

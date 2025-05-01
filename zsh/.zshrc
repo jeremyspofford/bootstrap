@@ -2,7 +2,7 @@
 export ZSH="$HOME/.oh-my-zsh"
 
 # Source modular configurations
-for config_file (~/.config/zsh/*.zsh); do 
+for config_file in ~/.config/zsh/*.zsh(.N); do 
     source $config_file
 done
 
