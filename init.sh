@@ -20,9 +20,11 @@ files_to_backup=(
 )
 
 ignore_stow_modules=(
+  .stowrc
   ansible
-  README.md
   init.sh
+  inventory.ini
+  README.md
 )
 
 # ============================================================================ #
@@ -107,7 +109,6 @@ stow_it() {
   cd ~/dotfiles/
   for dir in *; do
     if [[ ! " ${ignore_stow_modules[@]} " =~ " ${dir} " ]]; then
-      log "Stowing $dir"
       stow --target=$HOME --restow "$dir" 2>/dev/null
     fi
   done
@@ -117,7 +118,7 @@ stow_it() {
 generate_ssh_key() {
   if [[ ! -f ~/.ssh/personal_id_ed25519 ]]; then
     mkdir -p ~/.ssh
-     -n "GitHub email: "
+    echo -n "GitHub email: "
     read email
     ssh-keygen -t ed25519 -C $email -f ~/.ssh/personal_id_ed25519 -N ""
     cat ~/.ssh/personal_id_ed25519.pub | xclip -selection clipboard
