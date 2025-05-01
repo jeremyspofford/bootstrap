@@ -7,4 +7,4 @@ for config_file in ~/.config/zsh/*.zsh(.N); do
 done
 
 # Load Oh My Zsh
-source $ZSH/oh-my-zsh.sh 
+source $ZSH
