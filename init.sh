@@ -55,7 +55,7 @@ install_ansible_ubuntu() {
   if ! command -v ansible >/dev/null; then
     log "Installing Ansible via apt..."
     sudo apt update && sudo apt upgrade -y
-    sudo apt install -y software-properties-common
+    sudo apt install -y software-properties-common build-essential
     sudo apt-add-repository --yes --update ppa:ansible/ansible
     sudo apt install -y ansible
   fi
@@ -164,6 +164,7 @@ finalize() {
       log "Backup folder removed"
     fi
   fi
+  zsh
 }
 
 # ============================================================================ #
