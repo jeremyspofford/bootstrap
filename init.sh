@@ -147,7 +147,7 @@ mise_install() {
 run_ansible_and_continue() {
   if command -v ansible >/dev/null; then
     log "Running Ansible playbook..."
-    ansible-playbook ~/dotfiles/ansible/playbook.yml
+    ansible-playbook -i ~/dotfiles/ansible/inventory.ini ~/dotfiles/ansible/playbook.yml
   fi
 }
 
@@ -226,6 +226,7 @@ main() {
   stow_it
   mise_install
   generate_ssh_key
+  extras
   finalize
 
   log "✅ Full bootstrap complete!"
