@@ -4,11 +4,18 @@
     state: present
     update_cache: yes
   loop:
-    - gnupg
+    - bat
+    - chezmoi
     - curl
-    - unzip
-    - stow
-    - xclip
+    - fzf
+    - gnupg
     - locate
+    - ripgrep
+    - stow
+    - jq
+    - tmux
+    - unzip
+    - xclip
+    - zoxide
     - zsh
   when: ansible_os_family == "Debian"
