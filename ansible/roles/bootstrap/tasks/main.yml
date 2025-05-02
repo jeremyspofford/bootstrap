@@ -5,6 +5,7 @@
     update_cache: yes
   loop:
     - bat
+    - build-essential
     - curl
     - fzf
     - gnupg
