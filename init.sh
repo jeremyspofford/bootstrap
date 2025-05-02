@@ -155,14 +155,6 @@ finalize() {
   log "Finalizing setup..."
   sudo apt autoremove -y
 
-  if [[ ! -d ~/.oh-my-zsh ]]; then
-    log "Installing Oh My Zsh..."
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-  fi
-
-  rm ~/.zshrc.pre-oh-my-zsh ~/.zshrc
-  stow --dir=$HOME/dotfiles --target=$HOME --restow zsh
-
   # Prompt user about backup folder
   if [[ -d "$HOME/backup_"* ]]; then
     log "Backup folder found. Would you like to remove it? [y/N]"
