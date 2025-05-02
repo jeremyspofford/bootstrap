@@ -160,8 +160,7 @@ finalize() {
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
   fi
 
-  #Backing dotfiles again because oh-my-zsh overrides the .zshrc file, and stow doesn't like that ( # TOD0: move to yadm or chezmoi?)
-  backup_dotfiles
+  rm ~/.zshrc.pre-oh-my-zsh ~/.zshrc
   stow --dir=$HOME/dotfiles --target=$HOME --restow zsh
 
   # Prompt user about backup folder

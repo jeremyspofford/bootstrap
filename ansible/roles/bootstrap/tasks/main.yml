@@ -5,14 +5,13 @@
     update_cache: yes
   loop:
     - bat
-    - chezmoi
     - curl
     - fzf
     - gnupg
+    - jq
     - locate
     - ripgrep
     - stow
-    - jq
     - tmux
     - unzip
     - xclip
