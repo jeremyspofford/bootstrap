@@ -157,11 +157,7 @@ finalize() {
 
   if [[ ! -d ~/.oh-my-zsh ]]; then
     log "Installing Oh My Zsh..."
-    if [[ ! -f ~/.zshrc.pre-oh-my-zsh ]]; then
-      mv ~/.zshrc ~/.zshrc.pre-oh-my-zsh
-    fi
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-    cat ~/.zshrc.pre-oh-my-zsh >> ~/.zshrc
   fi
 
   #Backing dotfiles again because oh-my-zsh overrides the .zshrc file, and stow doesn't like that ( # TOD0: move to yadm or chezmoi?)
