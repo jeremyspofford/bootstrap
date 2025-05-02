@@ -151,6 +151,12 @@ run_ansible_and_continue() {
   fi
 }
 
+extras() {
+    if [[ -f /usr/bin/batcat ]]; then
+        ln -s /usr/bin/batcat ~/.local/bin/bat
+    fi
+}
+
 finalize() {
   log "Finalizing setup..."
   sudo apt autoremove -y
