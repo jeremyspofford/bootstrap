@@ -29,10 +29,11 @@
     creates: /usr/local/bin/starship
 
 - name: Add Starship init to .zshrc
+  become: false
   ansible.builtin.lineinfile:
-    path: ~/.zshrc
+    path: "${{ ansible_env.HOME }}/.zshrc"
     line: 'eval "$(starship init zsh)"'
-    state: present
+    create: yes
 
 - name: Install chezmoi
   ansible.builtin.shell: |
