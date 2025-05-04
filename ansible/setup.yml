@@ -1,9 +1,10 @@
 ---
 - name: Configure local machine
   hosts: local
-  become: true
   roles:
+    # - debug
     - packages
     - zsh
+    # - 1password
     - chezmoi
 

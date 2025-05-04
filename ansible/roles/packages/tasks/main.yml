@@ -20,12 +20,14 @@
   community.general.homebrew:
     name: "{{ common_packages + mac_specific }}"
     state: present
+  become: true
 
 - name: Install Debian packages
   when: is_debian
   ansible.builtin.package:
     name: "{{ common_packages + debian_specific }}"
     state: present
+  become: true
 
 # - name: Install Starship prompt
 #   ansible.builtin.shell: |
