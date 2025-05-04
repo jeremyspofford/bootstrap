@@ -148,8 +148,11 @@ mise_install() {
 
 run_ansible_and_continue() {
   if command -v ansible >/dev/null; then
+    log "Installing required Ansible collections..."
+    ansible-galaxy collection install community.general
+
     log "Running Ansible playbook..."
-    ansible-playbook -i ~/dotfiles/ansible/inventory.ini ~/dotfiles/ansible/playbook.yml
+    ansible-playbook -i ~/dotfiles/ansible/inventory.ini ~/dotfiles/ansible/setup.yml
   fi
 }
 
