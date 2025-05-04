@@ -1,12 +1,24 @@
 ---
-- name: Install chezmoi
-  ansible.builtin.shell: |
-    sh -c "$(curl -fsLS get.chezmoi.io)"
-  args:
-    creates: /usr/local/bin/chezmoi
+- name: Ensure ~/.local/bin directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.local/bin"
+    state: directory
+    mode: '0755'
 
-- name: Initialize chezmoi
-  ansible.builtin.command:
-    cmd: chezmoi init --apply https://github.com/jeremyspofford/dotfiles.git
+- name: Download chezmoi install script and run it to ~/.local/bin
+  ansible.builtin.shell: |
+    sh -c "$(curl -fsLS get.chezmoi.io)" -- -b {{ ansible_env.HOME }}/.local/bin
   args:
-    creates: ~/.local/share/chezmoi
+    executable: /bin/bash
+  environment:
+    PATH: "{{ ansible_env.PATH }}"
+  become: false
+
+- name: Ensure chezmoi is executable and on PATH
+  ansible.builtin.lineinfile:
+    path: "{{ ansible_env.HOME }}/.zshrc"
+    line: 'export PATH="$HOME/.local/bin:$PATH"'
+    insertafter: EOF
+    state: present
+  become: false
+

@@ -54,27 +54,29 @@ install_ansible_macos() {
 install_ansible_ubuntu() {
   if ! command -v ansible >/dev/null; then
     log "Installing Ansible via apt..."
-    sudo apt update && sudo apt upgrade -y
-    sudo apt install -y software-properties-common
-    sudo apt-add-repository --yes --update ppa:ansible/ansible
+    sudo apt update -y
     sudo apt install -y ansible
+    # sudo apt update && sudo apt upgrade -y
+    # sudo apt install -y software-properties-common
+    # sudo apt-add-repository --yes --update ppa:ansible/ansible
+    # sudo apt install -y ansible
   fi
 }
 
 detect_os_and_install_ansible() {
   case "$(uname -s)" in
-    Darwin)
-      log "Detected macOS"
-      install_ansible_macos
-      ;;
-    Linux)
-      log "Detected Linux"
-      install_ansible_ubuntu
-      ;;
-    *)
-      error "Unsupported OS: $(uname -s)"
-      exit 1
-      ;;
+  Darwin)
+    log "Detected macOS"
+    install_ansible_macos
+    ;;
+  Linux)
+    log "Detected Linux"
+    install_ansible_ubuntu
+    ;;
+  *)
+    error "Unsupported OS: $(uname -s)"
+    exit 1
+    ;;
   esac
 }
 
@@ -188,7 +190,7 @@ main() {
   backup=true
   OPTIONS=n
   LONGOPTIONS=no-backup
-  
+
   PARSED=$(getopt --options=$OPTIONS --longoptions=$LONGOPTIONS --name "$0" -- "$@")
   if [[ $? -ne 0 ]]; then
     exit 1
@@ -197,18 +199,18 @@ main() {
 
   while true; do
     case "$1" in
-      -n | --no-backup)
-        backup=false
-        shift
-        ;;
-      --)
-        shift
-        break
-        ;;
-      *)
-        error "Invalid option: $1" >&2
-        exit 1
-        ;;
+    -n | --no-backup)
+      backup=false
+      shift
+      ;;
+    --)
+      shift
+      break
+      ;;
+    *)
+      error "Invalid option: $1" >&2
+      exit 1
+      ;;
     esac
   done
 

@@ -36,6 +36,7 @@
     create: yes
 
 - name: Install chezmoi
+  become: false
   ansible.builtin.shell: |
     sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply jeremyspofford
   args:
