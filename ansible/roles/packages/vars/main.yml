@@ -13,7 +13,6 @@ common_packages:
 
 debian_specific:
   - build-essential
-  - python3-pip
   - gnupg
   - htop
   - jq

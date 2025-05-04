@@ -5,64 +5,64 @@
     state: directory
     mode: '0755'
 
-- name: Install 1Password CLI (Debian/Ubuntu)
-  when: ansible_os_family == 'Debian'
-  block:
-    - name: Add 1Password apt key
-      ansible.builtin.get_url:
-        url: https://downloads.1password.com/linux/keys/1password.asc
-        dest: /usr/share/keyrings/1password-archive-keyring.asc
-        mode: '0644'
-      become: true
+# - name: Install 1Password CLI (Debian/Ubuntu)
+#   when: ansible_os_family == 'Debian'
+#   block:
+#     - name: Add 1Password apt key
+#       ansible.builtin.get_url:
+#         url: https://downloads.1password.com/linux/keys/1password.asc
+#         dest: /usr/share/keyrings/1password-archive-keyring.asc
+#         mode: '0644'
+#       become: true
 
-    - name: Add 1Password repository
-      ansible.builtin.apt_repository:
-        repo: "deb [arch=amd64 signed-by=/usr/share/keyrings/1password-archive-keyring.asc] https://downloads.1password.com/linux/debian/amd64 stable main"
-        state: present
-      become: true
+#     - name: Add 1Password repository
+#       ansible.builtin.apt_repository:
+#         repo: "deb [arch=amd64 signed-by=/usr/share/keyrings/1password-archive-keyring.asc] https://downloads.1password.com/linux/debian/amd64 stable main"
+#         state: present
+#       become: true
 
-    - name: Install 1Password CLI
-      ansible.builtin.apt:
-        name: 1password-cli
-        update_cache: yes
-      become: true
+#     - name: Install 1Password CLI
+#       ansible.builtin.apt:
+#         name: 1password-cli
+#         update_cache: yes
+#       become: true
 
-- name: Install 1Password CLI (macOS)
-  when: ansible_os_family == 'Darwin'
-  community.general.homebrew_cask:
-    name: 1password-cli
-    state: present
+# - name: Install 1Password CLI (macOS)
+#   when: ansible_os_family == 'Darwin'
+#   community.general.homebrew_cask:
+#     name: 1password-cli
+#     state: present
 
-- name: Install Chezmoi
-  ansible.builtin.shell: |
-    sh -c "$(curl -fsLS get.chezmoi.io)" -- -b {{ ansible_env.HOME }}/.local/bin
-  args:
-    creates: "{{ ansible_env.HOME }}/.local/bin/chezmoi"
+# - name: Install Chezmoi
+#   ansible.builtin.shell: |
+#     sh -c "$(curl -fsLS get.chezmoi.io)" -- -b {{ ansible_env.HOME }}/.local/bin
+#   args:
+#     creates: "{{ ansible_env.HOME }}/.local/bin/chezmoi"
 
-- name: Create Chezmoi config directory
-  ansible.builtin.file:
-    path: "{{ ansible_env.HOME }}/.config/chezmoi"
-    state: directory
-    mode: '0755'
+# - name: Create Chezmoi config directory
+#   ansible.builtin.file:
+#     path: "{{ ansible_env.HOME }}/.config/chezmoi"
+#     state: directory
+#     mode: '0755'
 
-- name: Initialize Chezmoi with dotfiles repository
-  ansible.builtin.command:
-    cmd: "{{ ansible_env.HOME }}/.local/bin/chezmoi init --apply git@github.com:jeremyspofford/dotfiles.git"
-  args:
-    creates: "{{ ansible_env.HOME }}/.local/share/chezmoi"
+# - name: Initialize Chezmoi with dotfiles repository
+#   ansible.builtin.command:
+#     cmd: "{{ ansible_env.HOME }}/.local/bin/chezmoi init --apply git@github.com:jeremyspofford/dotfiles.git"
+#   args:
+#     creates: "{{ ansible_env.HOME }}/.local/share/chezmoi"
 
-- name: Add ~/.local/bin to PATH in ~/.zshrc
-  ansible.builtin.lineinfile:
-    path: "{{ ansible_env.HOME }}/.zshrc"
-    line: 'export PATH="$HOME/.local/bin:$PATH"'
-    insertafter: EOF
-    state: present
+# - name: Add ~/.local/bin to PATH in ~/.zshrc
+#   ansible.builtin.lineinfile:
+#     path: "{{ ansible_env.HOME }}/.zshrc"
+#     line: 'export PATH="$HOME/.local/bin:$PATH"'
+#     insertafter: EOF
+#     state: present
 
-- name: Initialize chezmoi and apply dotfiles
-  ansible.builtin.shell: |
-    "{{ ansible_env.HOME }}/.local/bin/chezmoi init --apply jeremyspofford"
-  args:
-    executable: /bin/bash
-  environment:
-    PATH: "{{ ansible_env.HOME }}/.local/bin:{{ ansible_env:PATH }}"
-  become: false
+# - name: Initialize chezmoi and apply dotfiles
+#   ansible.builtin.shell: |
+#     "{{ ansible_env.HOME }}/.local/bin/chezmoi init --apply jeremyspofford"
+#   args:
+#     executable: /bin/bash
+#   environment:
+#     PATH: "{{ ansible_env.HOME }}/.local/bin:{{ ansible_env:PATH }}"
+#   become: false
