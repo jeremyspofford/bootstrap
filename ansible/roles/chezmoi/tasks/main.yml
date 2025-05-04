@@ -1,0 +1,12 @@
+---
+- name: Install chezmoi
+  ansible.builtin.shell: |
+    sh -c "$(curl -fsLS get.chezmoi.io)"
+  args:
+    creates: /usr/local/bin/chezmoi
+
+- name: Initialize chezmoi
+  ansible.builtin.command:
+    cmd: chezmoi init --apply https://github.com/jeremyspofford/dotfiles.git
+  args:
+    creates: ~/.local/share/chezmoi

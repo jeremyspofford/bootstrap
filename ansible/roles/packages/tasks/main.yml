@@ -1,0 +1,40 @@
+---
+- name: Install Debian packages (Debian/Ubuntu)
+  ansible.builtin.package:
+    name:
+      - bat
+      - build-essential
+      - curl
+      - fzf
+      - git
+      - gnupg
+      - htop
+      - jq
+      - locate
+      - neovim
+      - ripgrep
+      - starship
+      - stow
+      - tmux
+      - tree
+      - unzip
+      - xclip
+      - zsh
+      - zoxide
+    state: present
+
+- name: Install chezmoi
+  ansible.builtin.shell: |
+    sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply jeremyspofford
+  args:
+    creates: /usr/local/bin/chezmoi
+  tags: [chezmoi]
+
+- name: Initialize chezmoi with your repo
+  ansible.builtin.command:
+    cmd: chezmoi init --apply git@github.com:jeremyspofford/dotfiles.git
+  args:
+    creates: ~/.local/share/chezmoi
+  tags: [chezmoi]
+
+
