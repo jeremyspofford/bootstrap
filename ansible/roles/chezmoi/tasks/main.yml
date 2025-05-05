@@ -20,11 +20,11 @@
     state: directory
     mode: '0755'
 
-- name: Initialize chezmoi and apply dotfiles
-  ansible.builtin.command:
-    cmd: "{{ ansible_env.HOME }}/.local/bin/chezmoi init --apply jeremyspofford"
-  environment:
-    PATH: "{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.PATH }}"
-  args:
-    creates: "{{ ansible_env.HOME }}/.local/share/chezmoi"
-  become: false
+# - name: Initialize chezmoi and apply dotfiles
+#   ansible.builtin.command:
+#     cmd: "{{ ansible_env.HOME }}/.local/bin/chezmoi init --apply jeremyspofford"
+#   environment:
+#     PATH: "{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.PATH }}"
+#   args:
+#     creates: "{{ ansible_env.HOME }}/.local/share/chezmoi"
+#   become: false

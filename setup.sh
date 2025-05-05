@@ -66,7 +66,7 @@ generate_ssh_key() {
     mkdir -p ~/.ssh
     echo -n "GitHub email: "
     read email
-    ssh-keygen -t ed25519 -C $email -f ~/.ssh/personal_id_ed25519 -N ""
+    ssh-keygen -t ed25519 -C "$email" -f ~/.ssh/personal_id_ed25519 -N ""
     cat ~/.ssh/personal_id_ed25519.pub | xclip -selection clipboard
     eval "$(ssh-agent -s)"
     ssh-add ~/.ssh/personal_id_ed25519
@@ -83,9 +83,6 @@ generate_ssh_key() {
 
 run_ansible_and_continue() {
   if command -v ansible >/dev/null; then
-    log "Installing required Ansible collections..."
-    ansible-galaxy collection install community.general
-
     log "Running Ansible playbook..."
     ansible-playbook -i ~/dotfiles/ansible/inventory.ini ~/dotfiles/ansible/setup.yml
   fi
@@ -108,9 +105,10 @@ main() {
     fi
   fi
 
+  generate_ssh_key
   detect_os_and_install_ansible
   run_ansible_and_continue
-  generate_ssh_key
+  source ~/.zshrc
 
   log "✅ Full bootstrap complete!"
 }
